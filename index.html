@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encuesta de Logos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/parse/3.4.1/parse.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Encuesta de Logos</h1>
+            <p>¡Vota por tu logo favorito!</p>
+        </header>
+
+        <div class="logos-container" id="logosContainer">
+            <!-- Logos se cargarán aquí con JavaScript -->
+        </div>
+
+        <div class="results">
+            <h2>Resultados en Tiempo Real</h2>
+            <div class="results-grid" id="resultsContainer">
+                <!-- Resultados se actualizarán aquí -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Añadido: Mensaje de confirmación -->
+    <div id="confirmationMessage" class="confirmation-message">
+        Voto registrado. ¡Gracias por su participación!
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
