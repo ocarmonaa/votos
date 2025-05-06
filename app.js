@@ -39,10 +39,13 @@ function renderLogos() {
             <img src="${logo.imageUrl}" alt="${logo.name}">
             <h3>${logo.name}</h3>
             <div class="vote-count" id="count-${logo.id}">0 votos</div>
+            <button class="vote-button" id="vote-${logo.id}">Votar</button>
         `;
         
-        logoCard.addEventListener('click', () => voteForLogo(logo.id));
         container.appendChild(logoCard);
+        
+        // Asignar evento al botón de votar
+        document.getElementById(`vote-${logo.id}`).addEventListener('click', () => voteForLogo(logo.id));
     });
 }
 
@@ -82,10 +85,18 @@ function renderResults() {
 
 // Votar por un logo
 async function voteForLogo(logoId) {
+    const voteButton = document.getElementById(`vote-${logoId}`);
+    
     try {
+        // Deshabilitar botón durante el proceso
+        voteButton.disabled = true;
+        voteButton.textContent = 'Votando...';
+        
         // Mostrar selección visual
         if (selectedLogo) {
             document.getElementById(`card-${selectedLogo}`).classList.remove('selected');
+            document.getElementById(`vote-${selectedLogo}`).disabled = false;
+            document.getElementById(`vote-${selectedLogo}`).textContent = 'Votar';
         }
         selectedLogo = logoId;
         document.getElementById(`card-${logoId}`).classList.add('selected');
@@ -111,9 +122,22 @@ async function voteForLogo(logoId) {
         
         // Actualizar resultados
         fetchVotes();
+        
+        // Deshabilitar todos los botones después de votar
+        logos.forEach(logo => {
+            const button = document.getElementById(`vote-${logo.id}`);
+            if (button) {
+                button.disabled = true;
+            }
+        });
+        
     } catch (error) {
         console.error('Error al votar:', error);
         showConfirmationMessage('Error al registrar el voto', true);
+        
+        // Rehabilitar botón en caso de error
+        voteButton.disabled = false;
+        voteButton.textContent = 'Votar';
     }
 }
 
@@ -147,17 +171,40 @@ function showConfirmationMessage(message = null, isError = false) {
     
     if (message) {
         confirmationMessage.textContent = message;
+    } else {
+        confirmationMessage.innerHTML = `
+            Voto registrado. ¡Gracias por su participación!
+            <button class="close-button" id="closeAppButton">Cerrar Aplicación</button>
+        `;
     }
     
     if (isError) {
-        confirmationMessage.style.backgroundColor = '#ff4444';
+        confirmationMessage.classList.add('error');
+        confirmationMessage.classList.remove('show');
     } else {
-        confirmationMessage.style.backgroundColor = 'var(--success-bg)';
+        confirmationMessage.classList.remove('error');
     }
     
     confirmationMessage.classList.add('show');
     
-    setTimeout(() => {
-        confirmationMessage.classList.remove('show');
-    }, 3000);
+    // Configurar botón de cerrar
+    const closeButton = document.getElementById('closeAppButton');
+    if (closeButton) {
+        closeButton.addEventListener('click', () => {
+            // Cerrar la pestaña o ventana del navegador
+            window.close();
+            
+            // Alternativa para navegadores que no permiten window.close()
+            if(!window.closed) {
+                document.body.innerHTML = '<h1 style="text-align:center;margin-top:2rem;">Gracias por participar. Puede cerrar esta pestaña.</h1>';
+            }
+        });
+    }
+    
+    // Ocultar mensaje después de 3 segundos (solo si no es error)
+    if (!isError) {
+        setTimeout(() => {
+            confirmationMessage.classList.remove('show');
+        }, 3000);
+    }
 }
