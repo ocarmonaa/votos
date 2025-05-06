@@ -6,6 +6,7 @@
     --dark: #212529;
     --success: #4cc9f0;
     --success-bg: rgba(76, 201, 240, 0.9);
+    --error-bg: rgba(255, 68, 68, 0.9);
 }
 
 * {
@@ -57,7 +58,6 @@ header p {
     text-align: center;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
-    cursor: pointer;
     border: 2px solid transparent;
 }
 
@@ -76,6 +76,7 @@ header p {
     height: auto;
     border-radius: 5px;
     margin-bottom: 1rem;
+    pointer-events: none;
 }
 
 .logo-card h3 {
@@ -87,6 +88,30 @@ header p {
     font-weight: bold;
     color: var(--primary);
     font-size: 1.2rem;
+    margin: 0.5rem 0;
+}
+
+.vote-button {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.vote-button:hover {
+    background-color: var(--secondary);
+    transform: translateY(-2px);
+}
+
+.vote-button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    transform: none;
 }
 
 .results {
@@ -138,7 +163,7 @@ header p {
     font-weight: bold;
 }
 
-/* Añadido: Estilos para el mensaje de confirmación */
+/* Mensaje de confirmación */
 .confirmation-message {
     position: fixed;
     top: 50%;
@@ -155,10 +180,34 @@ header p {
     opacity: 0;
     transition: opacity 0.3s ease;
     pointer-events: none;
+    text-align: center;
 }
 
 .confirmation-message.show {
     opacity: 1;
+}
+
+.confirmation-message.error {
+    background-color: var(--error-bg);
+}
+
+/* Botón de cerrar */
+.close-button {
+    display: block;
+    margin: 1rem auto 0;
+    padding: 0.5rem 1.5rem;
+    background-color: white;
+    color: var(--primary);
+    border: 2px solid var(--primary);
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.close-button:hover {
+    background-color: var(--primary);
+    color: white;
 }
 
 @media (max-width: 768px) {
@@ -176,10 +225,8 @@ header p {
         margin: 0.5rem 0;
     }
 
-    /* Añadido: Ajuste para móviles */
     .confirmation-message {
         width: 90%;
-        text-align: center;
         padding: 1rem;
         font-size: 1rem;
     }
